@@ -52,11 +52,6 @@ class Jwt {
             expiresIn:  "30d",    // 30 days validity
             algorithm:  "RS256"    
         };
-        console.log([
-            this.data, 
-            this.private,
-            option
-        ])
         return await jwt.sign(
             this.data, 
             this.private,
@@ -71,11 +66,6 @@ class Jwt {
             expiresIn:  "30d",
             algorithm:  ["RS256"]
         };
-        console.log([
-            this.data, 
-            this.public,
-            option
-        ])
         return await jwt.verify(
             this.data, 
             this.public,
