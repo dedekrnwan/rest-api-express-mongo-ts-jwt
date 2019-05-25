@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es6",
+    "outDir": "./bin",
+    "baseUrl": "./"
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
