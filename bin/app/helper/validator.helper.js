@@ -1,23 +1,17 @@
 import * as joi from "joi";
-
-
-class Validator 
-{
-    public validate:any
-    public schema:any
-    constructor(){
-        this.validate = this.funcValidate()
-        this.schema = this.funcSchema()
+class Validator {
+    constructor() {
+        this.validate = this.funcValidate();
+        this.schema = this.funcSchema();
     }
-
-    private funcValidate():any{
+    funcValidate() {
         return {
-            param: (schema:any, name:any) => {
+            param: (schema, name) => {
                 return (req, res, next) => {
                     let result = joi.validate({
                         param: req['params'][name]
-                    }, schema)
-                    if(result.error){
+                    }, schema);
+                    if (result.error) {
                         return res.status(400).json({
                             response: !result.error.isJoi,
                             message: result.error.name,
@@ -25,34 +19,36 @@ class Validator
                                 error: result.error.details[0].message,
                                 param: result.error._object.param
                             }
-                        })
-                    }else{
+                        });
+                    }
+                    else {
                         next();
                     }
-                }
+                };
             },
-            body: (schema:any) => {
+            body: (schema) => {
                 return (req, res, next) => {
                     let result = joi.validate(req.body, schema);
-                    if(result.error){
+                    if (result.error) {
                         return res.status(400).json({
                             response: !result.error.isJoi,
                             message: result.error.name,
                             data: {
                                 error: result.error.details,
                             }
-                        })
-                    }else{
+                        });
+                    }
+                    else {
                         next();
                     }
-                }
+                };
             }
-        }
+        };
     }
-    private funcSchema():any{
+    funcSchema() {
         return {
             object: {
-                id:  joi.object().keys({
+                id: joi.object().keys({
                     // param: joi.string().regex(/^[0-9a-zA-Z][24]$/).required()
                     param: joi.string().alphanum().min(24).max(24).required()
                 }),
@@ -65,7 +61,6 @@ class Validator
                 register: joi.object().keys({
                     email: joi.string().email().required(),
                     username: joi.string().required(),
-                    name: joi.string().required(),
                     birthdate: joi.date().required(),
                     phone: joi.string(),
                     telephone: joi.string(),
@@ -96,9 +91,8 @@ class Validator
                 updated_date: joi.date(),
                 updated_by_id: joi.string().alphanum().min(24).max(24),
             }),
-        }
+        };
     }
 }
-
-
-export default Validator
+export default Validator;
+//# sourceMappingURL=validator.helper.js.map

@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import App from 'lib/app';
+import App from './../../lib/app';
 
 interface AppInterface{
     name:string,

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+      "paths": { "*": ["types/*"] },
     "sourceMap": true,
     "target": "es6",
     "outDir": "./bin",

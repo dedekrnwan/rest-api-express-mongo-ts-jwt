@@ -1,6 +1,6 @@
 import * as express from "express";
-import { request } from "https";
-import User from "./../../app/models/user.models";
+import User from "../models/user.models";
+import { Jwt } from "../middleware/auth.middleware";
 
 interface UserInterface {
     email:string,
@@ -24,14 +24,21 @@ class UserAction
 {
     public path = '/user'
     public router = express.Router()
+    private jwt = new Jwt()
     constructor(){
         this.routes()
     }
 
     private routes(){
         this.router.route(this.path)
-            .get(this.index)
-            .post(this.store);
+            .get(
+                this.jwt.authenticated,
+                this.index
+            )
+            .post(
+                this.jwt.authenticated,
+                this.store
+            );
     }
 
     public async index(req, res, next){
