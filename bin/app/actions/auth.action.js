@@ -6,30 +6,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as express from "express";
-import User from "../models/user.models";
-import { Jwt } from "../middleware/auth.middleware";
-import JwtHelper from "../helper/jwt.helper";
-import ValidatorMiddleware from "../middleware/validator.middleware";
+import User from "../models/user.model";
+import HJwt from "../helper/jwt.helper";
 import * as bcrypt from "bcrypt";
 class AuthAction {
     constructor() {
         this.path = '/auth';
-        this.router = express.Router();
-        this.jwt = new Jwt();
-        this.validator = new ValidatorMiddleware();
-        this.routes();
-    }
-    routes() {
-        this.router.route('/login')
-            .post(this.validator.validate.body(this.validator.schema.Auth.login), this.login);
-        this.router.route('/register')
-            .post(this.validator.validate.body(this.validator.schema.Auth.register), this.register);
-        this.router.route('/forgot')
-            .post(this.forgot);
-        this.router.route('/reset')
-            .post(this.reset);
-        this.router.use(this.path, this.router);
     }
     login(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -40,7 +22,7 @@ class AuthAction {
                 if (user) {
                     let check = yield bcrypt.compare(req.body.password, user.password);
                     if (check) {
-                        const Jwt_helper = new JwtHelper({
+                        const Jwt_helper = new HJwt({
                             _id: user._id
                         });
                         let token = yield Jwt_helper.sign(); //need sign options

@@ -4,46 +4,35 @@ import * as morgan from "morgan";
 import Database from "./../app/config/database";
 import Server from "./../app/config/server";
 import * as cors from "cors";
+import Routes from "./../app/routes/routes";
+import MResponse from "./../app/middleware/response.middleware";
+import HResponse from "./../app/helper/response.helper";
 class App {
-    constructor(actions, port) {
+    constructor(port) {
         this.app = express();
         this.port = port;
         this.middleware();
-        this.actions(actions);
+        this.routes(new Routes().routes);
         this.connection();
     }
     middleware() {
-        this.app.use(cors);
+        this.app.use(cors());
         this.app.use(morgan('dev'));
         this.app.use(bodyparser.urlencoded({
             extended: true
         }));
         this.app.use(bodyparser.json());
     }
-    actions(actions) {
-        actions.forEach(action => {
-            this.app.use('/', action.router);
+    routes(routes) {
+        routes.forEach(route => {
+            this.app.use('/', route.router);
         });
         //404 handler
         this.app.use((req, res, next) => {
-            let error = new Error('Not Found');
-            error.status = 404;
-            return next(error);
+            next(new HResponse().notFound(`Not Found`, {}));
         });
-        //error handler
-        this.app.use((err, req, res, next) => {
-            let error = this.app.get('env') == 'development' ? err : {};
-            let status = err.status || 500;
-            //Response to client
-            res.status(status).json({
-                response: false,
-                message: error.message,
-                data: {
-                    message: error
-                }
-            });
-            //Response to us
-        });
+        //repsonse handler
+        this.app.use(MResponse);
     }
     connection() {
         const database = new Database();

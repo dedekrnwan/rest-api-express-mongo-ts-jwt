@@ -6,48 +6,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as express from "express";
-import User from "../models/user.models";
-import { Jwt } from "../middleware/auth.middleware";
-import ValidatorMiddleware from "../middleware/validator.middleware";
+import User from "../models/user.model";
+import HResponse from "../helper/response.helper";
 class UserAction {
     constructor() {
         this.path = '/user';
-        this.router = express.Router();
-        this.jwt = new Jwt();
-        this.validator = new ValidatorMiddleware();
-        this.routes();
-    }
-    routes() {
-        this.router.route(this.path)
-            .get(this.jwt.authenticated, this.index)
-            .post(this.jwt.authenticated, this.store);
-        this.router.route(`${this.path}/:id`)
-            .get(this.jwt.authenticated, this.validator.validate.param(this.validator.schema.object.id, 'id'), this.details)
-            .patch(this.jwt.authenticated, this.validator.validate.param(this.validator.schema.object.id, 'id'), this.validator.validate.body(this.validator.schema.User), this.update)
-            .delete(this.jwt.authenticated, this.validator.validate.param(this.validator.schema.object.id, 'id'), this.delete);
     }
     index(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let users = yield User.find();
                 if (users) {
-                    res.status(200).json({
-                        response: true,
-                        message: `User has been retrieve`,
-                        data: {
-                            user: users
-                        }
-                    });
+                    next(new HResponse().ok(`User has been retrieve`, { users: users }));
                 }
                 else {
-                    res.status(200).json({
-                        response: true,
-                        message: `User is null`,
-                        data: {
-                            user: users
-                        }
-                    });
+                    next(new HResponse().noContent(`User is null`, { users: users }));
                 }
             }
             catch (error) {

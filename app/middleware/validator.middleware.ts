@@ -1,4 +1,5 @@
 import * as joi from "joi";
+import HResponse from "./../helper/response.helper";
 
 class Validator 
 {
@@ -17,14 +18,10 @@ class Validator
                         param: req['params'][name]
                     }, schema)
                     if(result.error){
-                        return res.status(400).json({
-                            response: !result.error.isJoi,
-                            message: result.error.name,
-                            data: {
-                                error: result.error.details[0].message,
-                                param: result.error._object.param
-                            }
-                        })
+                        next(new HResponse().badRequest(result.error.name, {
+                            error: result.error.details[0].message,
+                            param: result.error._object.param
+                        }))
                     }else{
                         next();
                     }
@@ -34,13 +31,9 @@ class Validator
                 return (req, res, next) => {
                     let result = joi.validate(req.body, schema);
                     if(result.error){
-                        return res.status(400).json({
-                            response: !result.error.isJoi,
-                            message: result.error.name,
-                            data: {
-                                error: result.error.details,
-                            }
-                        })
+                        next(new HResponse().badRequest(result.error.name, {
+                            error: result.error.details,
+                        }))
                     }else{
                         next();
                     }

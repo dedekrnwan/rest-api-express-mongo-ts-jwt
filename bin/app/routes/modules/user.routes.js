@@ -1,12 +1,14 @@
 import * as express from "express";
-import ValidatorMiddleware from "../../middleware/validator.middleware";
-import { Jwt } from "../../middleware/auth.middleware";
+import AUser from "./../../actions/user.action";
+import MValidator from "../../middleware/validator.middleware";
+import { Jwt as MJwt } from "../../middleware/auth.middleware";
 class Routes {
-    constructor(action) {
+    constructor() {
         this.router = express.Router();
-        this.jwt = new Jwt();
-        this.validator = new ValidatorMiddleware();
-        this.action = new action();
+        this.jwt = new MJwt();
+        this.validator = new MValidator();
+        this.action = new AUser();
+        this.run();
     }
     run() {
         this.router.route(this.action.path)
@@ -16,7 +18,6 @@ class Routes {
             .get(this.jwt.authenticated, this.validator.validate.param(this.validator.schema.object.id, 'id'), this.action.details)
             .patch(this.jwt.authenticated, this.validator.validate.param(this.validator.schema.object.id, 'id'), this.validator.validate.body(this.validator.schema.User), this.action.update)
             .delete(this.jwt.authenticated, this.validator.validate.param(this.validator.schema.object.id, 'id'), this.action.delete);
-        return this.router;
     }
 }
 export default Routes;

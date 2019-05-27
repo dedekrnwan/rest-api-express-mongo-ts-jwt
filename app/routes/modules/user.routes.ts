@@ -1,16 +1,19 @@
 import * as express from "express";
-import ValidatorMiddleware from "../../middleware/validator.middleware";
-import { Jwt } from "../../middleware/auth.middleware";
+import AUser from "./../../actions/user.action";
+import MValidator from "../../middleware/validator.middleware";
+import { Jwt as MJwt } from "../../middleware/auth.middleware";
 
 class Routes {
-    private validator:ValidatorMiddleware
-    private jwt:Jwt
+    private validator:MValidator
+    private jwt:MJwt
     private router = express.Router()
-    private action:any
-    constructor(action:any) {
-        this.jwt = new Jwt()
-        this.validator = new ValidatorMiddleware()
-        this.action = new action()
+    private action:AUser
+    
+    constructor() {
+        this.jwt = new MJwt()
+        this.validator = new MValidator()
+        this.action = new AUser()
+        this.run()
     }
     
     public run(){
@@ -40,8 +43,6 @@ class Routes {
                 this.validator.validate.param(this.validator.schema.object.id, 'id'),
                 this.action.delete
             )
-
-        return this.router
     }
 }
 
