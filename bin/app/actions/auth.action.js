@@ -10,14 +10,14 @@ import * as express from "express";
 import User from "../models/user.models";
 import { Jwt } from "../middleware/auth.middleware";
 import JwtHelper from "../helper/jwt.helper";
-import ValidatorHelper from "../helper/validator.helper";
+import ValidatorMiddleware from "../middleware/validator.middleware";
 import * as bcrypt from "bcrypt";
 class AuthAction {
     constructor() {
         this.path = '/auth';
         this.router = express.Router();
         this.jwt = new Jwt();
-        this.validator = new ValidatorHelper();
+        this.validator = new ValidatorMiddleware();
         this.routes();
     }
     routes() {

@@ -1,6 +1,5 @@
 import * as joi from "joi";
 
-
 class Validator 
 {
     public validate:any
@@ -83,6 +82,7 @@ class Validator
             User: joi.object().keys({
                 email: joi.string().email().required(),
                 username: joi.string().required(),
+                name: joi.string().required(),
                 birthdate: joi.date().required(),
                 phone: joi.string(),
                 telephone: joi.string(),

@@ -3,6 +3,7 @@ import * as bodyparser from "body-parser";
 import * as morgan from "morgan";
 import Database from "./../app/config/database";
 import Server from "./../app/config/server";
+import * as cors from "cors";
 
 class App {
     public app:express.Application
@@ -16,6 +17,7 @@ class App {
     }
 
     private middleware(){
+        this.app.use(cors)
         this.app.use(morgan('dev'))
         this.app.use(bodyparser.urlencoded({
             extended: true  

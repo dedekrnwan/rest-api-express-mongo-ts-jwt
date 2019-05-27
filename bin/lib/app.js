@@ -3,6 +3,7 @@ import * as bodyparser from "body-parser";
 import * as morgan from "morgan";
 import Database from "./../app/config/database";
 import Server from "./../app/config/server";
+import * as cors from "cors";
 class App {
     constructor(actions, port) {
         this.app = express();
@@ -12,6 +13,7 @@ class App {
         this.connection();
     }
     middleware() {
+        this.app.use(cors);
         this.app.use(morgan('dev'));
         this.app.use(bodyparser.urlencoded({
             extended: true
@@ -25,7 +27,7 @@ class App {
         //404 handler
         this.app.use((req, res, next) => {
             let error = new Error('Not Found');
-            error.status = 400;
+            error.status = 404;
             return next(error);
         });
         //error handler

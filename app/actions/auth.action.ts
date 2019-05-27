@@ -2,7 +2,7 @@ import * as express from "express";
 import User from "../models/user.models";
 import { Jwt } from "../middleware/auth.middleware";
 import JwtHelper from "../helper/jwt.helper";
-import ValidatorHelper from "../helper/validator.helper";
+import ValidatorMiddleware from "../middleware/validator.middleware";
 import * as bcrypt from "bcrypt";
 
 interface UserInterface {
@@ -26,9 +26,9 @@ interface UserInterface {
 class AuthAction
 {
     public path = '/auth'
-    public router = express.Router()
-    private jwt = new Jwt()
-    private validator = new ValidatorHelper()
+    public router:express.Router = express.Router()
+    private jwt:Jwt = new Jwt()
+    private validator:ValidatorMiddleware = new ValidatorMiddleware()
     constructor(){
         this.routes()
     }

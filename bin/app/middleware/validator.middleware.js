@@ -61,6 +61,7 @@ class Validator {
                 register: joi.object().keys({
                     email: joi.string().email().required(),
                     username: joi.string().required(),
+                    name: joi.string().required(),
                     birthdate: joi.date().required(),
                     phone: joi.string(),
                     telephone: joi.string(),
@@ -78,6 +79,7 @@ class Validator {
             User: joi.object().keys({
                 email: joi.string().email().required(),
                 username: joi.string().required(),
+                name: joi.string().required(),
                 birthdate: joi.date().required(),
                 phone: joi.string(),
                 telephone: joi.string(),
@@ -95,4 +97,4 @@ class Validator {
     }
 }
 export default Validator;
-//# sourceMappingURL=validator.helper.js.map
+//# sourceMappingURL=validator.middleware.js.map
