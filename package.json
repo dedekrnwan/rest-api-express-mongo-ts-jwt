@@ -2,7 +2,7 @@
   "name": "typefrac",
   "version": "1.0.0",
   "description": "",
-  "main": "./bin/server.js",
+  "main": "./bin/lib/server.js",
   "directories": {
     "doc": "docs",
     "lib": "lib",
@@ -41,7 +41,8 @@
   "scripts": {
     "build": "rm -rf ./bin/* && tsc",
     "start": "ts-node ./lib/server.ts",
-    "dev": "npm run build && nodemon ./bin/server.js"
+    "dev": "npm run build && nodemon ./bin/server.js",
+    "production": "npm run build && npm start"
   },
   "keywords": [],
   "author": "",
