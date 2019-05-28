@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import User from "../models/user.model";
 import HResponse from "../helper/response.helper";
+import HException from "./../helper/exception.helper";
 class UserAction {
     constructor() {
         this.path = '/user';
@@ -24,7 +25,7 @@ class UserAction {
                 }
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -40,7 +41,7 @@ class UserAction {
                 }
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -54,7 +55,7 @@ class UserAction {
                 next(new HResponse().ok(`User successfully updated`, { user: user }));
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -67,7 +68,7 @@ class UserAction {
                 next(new HResponse().created(`User has been stored`, { user: promise }));
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -78,7 +79,7 @@ class UserAction {
                 next(new HResponse().ok(`User successfully deleted`, { user: promise }));
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }

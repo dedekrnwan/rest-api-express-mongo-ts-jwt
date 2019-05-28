@@ -39,7 +39,7 @@ class LicenseAction {
                 }
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -55,7 +55,7 @@ class LicenseAction {
                 next(new HResponse().ok(`User successfully updated`, { License: data }));
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -72,7 +72,7 @@ class LicenseAction {
                 next(new HResponse().created(`User has been stored`, { License: data }));
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -83,7 +83,7 @@ class LicenseAction {
                 next(new HResponse().ok(`User successfully deleted`, { License: promise }));
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }

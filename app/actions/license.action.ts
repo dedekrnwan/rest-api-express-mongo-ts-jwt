@@ -67,7 +67,7 @@ class LicenseAction
     public async delete(req: express.Request, res: express.Response, next: express.NextFunction) :Promise<any>{
         try {
             let promise = License.findOneAndRemove(req.params.id)
-            next(new HResponse().ok(`User successfully deleted`,{ License: promise }))
+            next(new HResponse().ok(`User successfully deleted`,{ License: null }))
         } catch (error) {
             next(new HException(error))
         }

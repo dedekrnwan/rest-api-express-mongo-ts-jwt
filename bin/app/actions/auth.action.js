@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as bcrypt from "bcrypt";
 import User from "../models/user.model";
 import HResponse from "./../helper/response.helper";
+import HException from "./../helper/exception.helper";
 import HJwt from "../helper/jwt.helper";
 class AuthAction {
     constructor() {
@@ -38,7 +39,7 @@ class AuthAction {
                 }
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -51,7 +52,7 @@ class AuthAction {
                 next(new HResponse().ok(`User successfully login`, { user: user }));
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -64,7 +65,7 @@ class AuthAction {
                 next(new HResponse().created(`User has been stored`, { user: promise }));
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }
@@ -77,7 +78,7 @@ class AuthAction {
                 next(new HResponse().created(`User has been stored`, { user: promise }));
             }
             catch (error) {
-                next(error);
+                next(new HException(error));
             }
         });
     }

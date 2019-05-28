@@ -11,7 +11,7 @@ class Exception extends Error {
       super(error.message);
       this.meta = {
         response: false,
-        status: error.status || 500,
+        status: error.status | 500,
         message: error.message,
         timestamp: new Date()
       }
