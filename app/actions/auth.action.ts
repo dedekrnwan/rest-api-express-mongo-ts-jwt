@@ -5,6 +5,7 @@ import { promises } from "fs";
 import User from "../models/user.model";
 
 import HResponse from "./../helper/response.helper";
+import HException from "./../helper/exception.helper";
 import HJwt from "../helper/jwt.helper";
 
 import IUser from "./../interfaces/user.interfaces";
@@ -38,7 +39,7 @@ class AuthAction
                 next(new HResponse().badRequest(`Email or password is invalid`,{ user: user }))
             }
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
     public async register(req: express.Request, res: express.Response, next: express.NextFunction):Promise<any>{
@@ -48,7 +49,7 @@ class AuthAction
             user = await user.save();
             next(new HResponse().ok(`User successfully login`,{ user: user }))
         } catch (error) {
-            next(error);
+            next(new HException(error));
         }
     }
     public async forgot(req: express.Request, res: express.Response, next: express.NextFunction):Promise<any>{
@@ -58,7 +59,7 @@ class AuthAction
             promise = await promise.save();
             next(new HResponse().created(`User has been stored`,{ user: promise }))
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
     public async reset(req: express.Request, res: express.Response, next: express.NextFunction):Promise<any>{
@@ -68,7 +69,7 @@ class AuthAction
             promise = await promise.save();
             next(new HResponse().created(`User has been stored`,{ user: promise }))
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
 }

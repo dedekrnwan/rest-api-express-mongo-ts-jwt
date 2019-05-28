@@ -2,6 +2,7 @@ import * as express from "express";
 import User from "../models/user.model";
 import IUser from "./../interfaces/user.interfaces";
 import HResponse from "../helper/response.helper";
+import HException from "./../helper/exception.helper";
 
 class UserAction
 {
@@ -19,7 +20,7 @@ class UserAction
                 next(new HResponse().noContent(`User is null`,{ users: users }))
             }
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
     public async details(req: express.Request, res: express.Response, next: express.NextFunction) :Promise<any>{
@@ -31,7 +32,7 @@ class UserAction
                 next(new HResponse().notFound('User not found', { users: users }))
             }
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
     public async update(req: express.Request, res: express.Response, next: express.NextFunction):Promise<any>{
@@ -42,7 +43,7 @@ class UserAction
             //handle transaction
             next(new HResponse().ok(`User successfully updated`,{ user: user }))
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
     public async store(req: express.Request, res: express.Response, next: express.NextFunction):Promise<any>{
@@ -52,7 +53,7 @@ class UserAction
             promise = await promise.save();
             next(new HResponse().created(`User has been stored`,{ user: promise }))
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
     public async delete(req: express.Request, res: express.Response, next: express.NextFunction) :Promise<any>{
@@ -60,7 +61,7 @@ class UserAction
             let promise = User.findOneAndRemove(req.params.id)
             next(new HResponse().ok(`User successfully deleted`,{ user: promise }))
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
 }

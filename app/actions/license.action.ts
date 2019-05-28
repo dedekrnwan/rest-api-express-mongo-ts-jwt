@@ -34,7 +34,7 @@ class LicenseAction
                 next(new HResponse().notFound('License not found', { License: data }))
             }
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
     public async update(req: express.Request, res: express.Response, next: express.NextFunction):Promise<any>{
@@ -47,7 +47,7 @@ class LicenseAction
             //handle transaction
             next(new HResponse().ok(`User successfully updated`,{ License: data }))
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
     public async store(req: express.Request, res: express.Response, next: express.NextFunction):Promise<any>{
@@ -61,7 +61,7 @@ class LicenseAction
             data = await data.save();
             next(new HResponse().created(`User has been stored`,{ License: data }))
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
     public async delete(req: express.Request, res: express.Response, next: express.NextFunction) :Promise<any>{
@@ -69,7 +69,7 @@ class LicenseAction
             let promise = License.findOneAndRemove(req.params.id)
             next(new HResponse().ok(`User successfully deleted`,{ License: promise }))
         } catch (error) {
-            next(error)
+            next(new HException(error))
         }
     }
 }
