@@ -89,6 +89,16 @@ class Validator
                 updated_date: joi.date(),
                 updated_by_id: joi.string().alphanum().min(24).max(24),
             }),
+            License: joi.object().keys({
+                license_name: joi.string().required(),
+                license_key: joi.string().required(),
+                description: joi.string(),
+                url: joi.string(),
+                created_date: joi.date(),
+                created_by_id: joi.string().alphanum().min(24).max(24),
+                updated_date: joi.date(),
+                updated_by_id: joi.string().alphanum().min(24).max(24),
+            }),
         }
     }
 }

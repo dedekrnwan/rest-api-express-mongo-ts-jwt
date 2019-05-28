@@ -33,22 +33,10 @@ class UserAction {
             try {
                 let users = yield User.findById(req.params.id);
                 if (users) {
-                    res.status(200).json({
-                        response: true,
-                        message: `User has been retrieve`,
-                        data: {
-                            user: users
-                        }
-                    });
+                    next(new HResponse().ok(`User has been retrieve`, { users: users }));
                 }
                 else {
-                    res.status(200).json({
-                        response: true,
-                        message: `User is null`,
-                        data: {
-                            user: users
-                        }
-                    });
+                    next(new HResponse().notFound('User not found', { users: users }));
                 }
             }
             catch (error) {
@@ -63,11 +51,7 @@ class UserAction {
                 user = yield User.findByIdAndUpdate(req.params.id, user);
                 user = yield User.findById(req.params.id);
                 //handle transaction
-                res.status(200).json({
-                    response: true,
-                    message: `User successfully updated`,
-                    data: user
-                });
+                next(new HResponse().ok(`User successfully updated`, { user: user }));
             }
             catch (error) {
                 next(error);
@@ -80,13 +64,7 @@ class UserAction {
                 let user = req.body;
                 let promise = new User(user);
                 promise = yield promise.save();
-                res.status(201).json({
-                    response: true,
-                    message: `User has been stored`,
-                    data: {
-                        user: promise
-                    }
-                });
+                next(new HResponse().created(`User has been stored`, { user: promise }));
             }
             catch (error) {
                 next(error);
@@ -97,11 +75,7 @@ class UserAction {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let promise = User.findOneAndRemove(req.params.id);
-                res.status(200).json({
-                    response: true,
-                    message: `User successfully deleted`,
-                    data: promise
-                });
+                next(new HResponse().ok(`User successfully deleted`, { user: promise }));
             }
             catch (error) {
                 next(error);

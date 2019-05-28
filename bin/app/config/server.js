@@ -4,7 +4,8 @@ class Server {
         this.app = {
             name: 'Fractal',
             port: 3000,
-            env: 'development'
+            env: 'development',
+            another_port: [8080, 80, 3000, 4000, 5000]
         };
     }
 }

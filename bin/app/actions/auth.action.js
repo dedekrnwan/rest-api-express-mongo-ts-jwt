@@ -6,9 +6,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import User from "../models/user.model";
-import HJwt from "../helper/jwt.helper";
 import * as bcrypt from "bcrypt";
+import User from "../models/user.model";
+import HResponse from "./../helper/response.helper";
+import HJwt from "../helper/jwt.helper";
 class AuthAction {
     constructor() {
         this.path = '/auth';
@@ -26,28 +27,14 @@ class AuthAction {
                             _id: user._id
                         });
                         let token = yield Jwt_helper.sign(); //need sign options
-                        res.status(200).json({
-                            response: true,
-                            message: `User successfully login`,
-                            data: {
-                                token: token,
-                            }
-                        });
+                        next(new HResponse().ok(`User successfully login`, { token: token }));
                     }
                     else {
-                        res.status(200).json({
-                            response: false,
-                            message: `Email or password is invalid`,
-                            data: user
-                        });
+                        next(new HResponse().badRequest(`Email or password is invalid`, { user: user }));
                     }
                 }
                 else {
-                    res.status(200).json({
-                        response: false,
-                        message: `Email or password is invalid`,
-                        data: user
-                    });
+                    next(new HResponse().badRequest(`Email or password is invalid`, { user: user }));
                 }
             }
             catch (error) {
@@ -61,14 +48,10 @@ class AuthAction {
                 req.body['password'] = yield bcrypt.hash(req.body['password'], 10);
                 let user = new User(req.body);
                 user = yield user.save();
-                res.status(200).json({
-                    response: true,
-                    message: `User successfully registered`,
-                    data: user
-                });
+                next(new HResponse().ok(`User successfully login`, { user: user }));
             }
             catch (error) {
-                return next(error);
+                next(error);
             }
         });
     }
@@ -78,13 +61,7 @@ class AuthAction {
                 let user = req.body;
                 let promise = new User(user);
                 promise = yield promise.save();
-                res.status(201).json({
-                    response: true,
-                    message: `User has been stored`,
-                    data: {
-                        user: promise
-                    }
-                });
+                next(new HResponse().created(`User has been stored`, { user: promise }));
             }
             catch (error) {
                 next(error);
@@ -97,13 +74,7 @@ class AuthAction {
                 let user = req.body;
                 let promise = new User(user);
                 promise = yield promise.save();
-                res.status(201).json({
-                    response: true,
-                    message: `User has been stored`,
-                    data: {
-                        user: promise
-                    }
-                });
+                next(new HResponse().created(`User has been stored`, { user: promise }));
             }
             catch (error) {
                 next(error);

@@ -1,8 +1,15 @@
 class Exception extends Error {
-    constructor(status, message) {
-        super(message);
-        this.status = status;
-        this.message = message;
+    constructor(error) {
+        super(error.message);
+        this.meta = {
+            response: false,
+            status: error.status || 500,
+            message: error.message,
+            timestamp: new Date()
+        };
+        this.data = {
+            error: error
+        };
     }
 }
 export default Exception;

@@ -14,7 +14,7 @@ class Jwt {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 //get the token from the header if present
-                let token = req.headers["x-api-key"] || req.headers["authorization"];
+                let token = req.headers["authorization"];
                 //if no token found, return response (without going to the next middelware)
                 if (!token)
                     return res.status(401).json({
@@ -26,8 +26,16 @@ class Jwt {
                 token = token.replace('Bearer ', '');
                 let Jwt_Helper = new jwtHelper(token);
                 const decoded = yield Jwt_Helper.verify();
-                req.user = decoded;
                 next();
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    authorized(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
             }
             catch (error) {
                 next(error);

@@ -1,4 +1,5 @@
 import * as joi from "joi";
+import HResponse from "./../helper/response.helper";
 class Validator {
     constructor() {
         this.validate = this.funcValidate();
@@ -12,14 +13,10 @@ class Validator {
                         param: req['params'][name]
                     }, schema);
                     if (result.error) {
-                        return res.status(400).json({
-                            response: !result.error.isJoi,
-                            message: result.error.name,
-                            data: {
-                                error: result.error.details[0].message,
-                                param: result.error._object.param
-                            }
-                        });
+                        next(new HResponse().badRequest(result.error.name, {
+                            error: result.error.details[0].message,
+                            param: result.error._object.param
+                        }));
                     }
                     else {
                         next();
@@ -30,13 +27,9 @@ class Validator {
                 return (req, res, next) => {
                     let result = joi.validate(req.body, schema);
                     if (result.error) {
-                        return res.status(400).json({
-                            response: !result.error.isJoi,
-                            message: result.error.name,
-                            data: {
-                                error: result.error.details,
-                            }
-                        });
+                        next(new HResponse().badRequest(result.error.name, {
+                            error: result.error.details,
+                        }));
                     }
                     else {
                         next();
@@ -88,6 +81,16 @@ class Validator {
                 email_verify_date: joi.date(),
                 password: joi.string().required(),
                 remember_token: joi.string(),
+                created_date: joi.date(),
+                created_by_id: joi.string().alphanum().min(24).max(24),
+                updated_date: joi.date(),
+                updated_by_id: joi.string().alphanum().min(24).max(24),
+            }),
+            License: joi.object().keys({
+                license_name: joi.string().required(),
+                license_key: joi.string().required(),
+                description: joi.string(),
+                url: joi.string(),
                 created_date: joi.date(),
                 created_by_id: joi.string().alphanum().min(24).max(24),
                 updated_date: joi.date(),

@@ -28,7 +28,7 @@ class UserAction
             if(users){
                 next(new HResponse().ok(`User has been retrieve`,{ users: users }))
             }else{
-                next(new HResponse().ok(`User is null`,{ users: users }))
+                next(new HResponse().notFound('User not found', { users: users }))
             }
         } catch (error) {
             next(error)

@@ -1,6 +1,6 @@
 import App from "./app";
 import Server from "./../app/config/server";
 
-const app = new App(new Server().app.port)
+const app = new App()
 
-app.run()
+app.run(new Server().app.port)
